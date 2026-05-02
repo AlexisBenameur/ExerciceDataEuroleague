@@ -1,7 +1,13 @@
 # Exercice Data Euroleague
 
-## Présentation de ma statistique 
+## I - Présentation de ma statistique et implémentation
 
-### La proba de victoire selon la différence de score 
+J'ai dédidé de m'intéresser à ce qu'on appelle les comebacks. Le fait de gagner un match alors qu'on a été mené auparavant dans le match. Ici j'ai choisi de définir le comeback par une défaite de 10 points ou plus à la fin du troisième quart temps. Bien entendu un comeback peut prendre bien d'autres formes et peut durer bien plus qu'un quart temps avant la fin du match. Mais pour simplifier j'ai choisi ce critère afin de voir déjà si les résultats obtenus avaient un sens. Mais alors par où commencer.
 
-### Quelles peuvent être les facteurs décisifs pour un comeback ?
+### A. La proba de victoire selon la différence de score 
+
+La première idée que j'ai eu et qui m'a donné envie de m'intéresser à ce sujet était de voir la probabilité de gagner en ayant une avance ou un retard d'un certain nombre de points à la fin de chaque quart temps. Pour ça il fallait d'abord récupérer tous les gamecodes dans get_gamecodes pour pouvoir apppeler par match chaque node (grapic stats, shooting chart etc...). Ensuite j'ai choisi un dictionnaire pour stocker les différences de score à chaque quart temps dans la fonction get_score et je n'ai pas choisi de la prendre par rapport à l'équipe gagnante mais par rapport à l'équipe à domicile. J'ai aussi stocké un booléen déterminant si l'équipe à domicile a gagné pour calculer la probabilité recherchée plus facilement dans proba_win_given_diff. Enfin plot_proba_win récupère les résultats de la fonction précédente pour chaque quart temps et la différence de score demandée. Le visuel est assez simple : une barre de probabilité par quart temps. L'idée pour donner plus de sens à cette statistique serait de regarder la probabilité minute par minute mais je ne voulais pas surcharger mon ordi qui aura, je pense, déjà du mal à parcourir les, plus de 300, matchs assez rapidement. Cependant cette stat seule n'apporte pas beaucoup plus d'informations que ça sur les stratégies gagnantes de certaines équipes.
+
+### B. Quelles peuvent être les facteurs décisifs pour un comeback ?
+
+Au vu de l'évolution récente des styles de jeu et l'augmentation de l'importance du tir à 3 points, je me suis intéressé à ce type de tirs en particulier. Deux choses peuvent être déterminantes pour les équipes qui réalisent un comeback : leur pourcentage de réussite à 3 points qui peut être meilleur à l'approche de la fin d'un match, et bien entendu leur attempt rate à trois points, id est la part des tirs qui sont des tirs à 3 points.
