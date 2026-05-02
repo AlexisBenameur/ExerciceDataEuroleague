@@ -116,7 +116,7 @@ def get_comeback_games(season):
     return comeback_games
 
 @st.cache_data
-def fg_percentage(season) : 
+def get_shot_numbers(season) : 
     comeback_games = get_comeback_games(season)
     dico = {}
 
@@ -184,7 +184,7 @@ def fg_percentage(season) :
 
 @st.cache_data
 def comeback_fg_percentage(season) : 
-    dico = fg_percentage(season)
+    dico = get_shot_numbers(season)
     scores_info = get_scores(season)
     raw_data = []
 
@@ -199,7 +199,7 @@ def comeback_fg_percentage(season) :
 
 @st.cache_data
 def comeback_3pt_attempt_rate (season):
-    dico = fg_percentage(season)
+    dico = get_shot_numbers(season)
     scores_info = get_scores(season)
     raw_data = []
 
