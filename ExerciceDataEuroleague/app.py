@@ -129,45 +129,52 @@ def get_shot_numbers(season) :
             r = requests.get(f"{url}/shootingchart", params = {**credentials, "gamecode" : gamecode, "seasoncode" : f"E{season}"})
             r.raise_for_status()
             data = r.json()
+            
+            if data["mainData"]["Live"] == False and data["mainData"]["ScoreA"]>data["mainData"]["ScoreB"]:
+                team = data["mainData"]["CodeTeamA"]
+            elif data["mainData"]["Live"] == False and data["mainData"]["ScoreA"]<data["mainData"]["ScoreB"]:
+                team = data["mainData"]["CodeTeamB"]
+
             donnees = data["points"]["Rows"]
 
             for play in donnees:
+                if play["TEAM"] == team :
 
-                if play["MINUTE"] <10:
-                    if play["ID_ACTION"]=="3FGA":
-                        fga3q1 += 1
-                    elif play["ID_ACTION"]=="3FGM":
-                        fgm3q1 += 1
-                        fga3q1 += 1
-                    elif play["ID_ACTION"]=="2FGA" or play["ID_ACTION"]=="2FGM":
-                        fga2q1 += 1
+                    if play["MINUTE"] <10:
+                        if play["ID_ACTION"]=="3FGA":
+                            fga3q1 += 1
+                        elif play["ID_ACTION"]=="3FGM":
+                            fgm3q1 += 1
+                            fga3q1 += 1
+                        elif play["ID_ACTION"]=="2FGA" or play["ID_ACTION"]=="2FGM":
+                            fga2q1 += 1
 
-                if play["MINUTE"] >= 10 and play["MINUTE"] < 20 :
-                    if play["ID_ACTION"]=="3FGA":
-                        fga3q2 += 1
-                    elif play["ID_ACTION"]=="3FGM":
-                        fgm3q2 += 1
-                        fga3q2 += 1
-                    elif play["ID_ACTION"]=="2FGA" or play["ID_ACTION"]=="2FGM":
-                        fga2q2 += 1
+                    if play["MINUTE"] >= 10 and play["MINUTE"] < 20 :
+                        if play["ID_ACTION"]=="3FGA":
+                            fga3q2 += 1
+                        elif play["ID_ACTION"]=="3FGM":
+                            fgm3q2 += 1
+                            fga3q2 += 1
+                        elif play["ID_ACTION"]=="2FGA" or play["ID_ACTION"]=="2FGM":
+                            fga2q2 += 1
 
-                if play["MINUTE"] >= 20 and play["MINUTE"] < 30 :
-                    if play["ID_ACTION"]=="3FGA":
-                        fga3q3 += 1
-                    elif play["ID_ACTION"]=="3FGM":
-                        fgm3q3 += 1
-                        fga3q3 += 1
-                    elif play["ID_ACTION"]=="2FGA" or play["ID_ACTION"]=="2FGM":
-                        fga2q3 += 1
+                    if play["MINUTE"] >= 20 and play["MINUTE"] < 30 :
+                        if play["ID_ACTION"]=="3FGA":
+                            fga3q3 += 1
+                        elif play["ID_ACTION"]=="3FGM":
+                            fgm3q3 += 1
+                            fga3q3 += 1
+                        elif play["ID_ACTION"]=="2FGA" or play["ID_ACTION"]=="2FGM":
+                            fga2q3 += 1
 
-                if play["MINUTE"] >= 30 :
-                    if play["ID_ACTION"]=="3FGA":
-                        fga3q4 += 1
-                    elif play["ID_ACTION"]=="3FGM":
-                        fgm3q4 += 1
-                        fga3q4 += 1
-                    elif play["ID_ACTION"]=="2FGA" or play["ID_ACTION"]=="2FGM":
-                        fga2q4 += 1
+                    if play["MINUTE"] >= 30 :
+                        if play["ID_ACTION"]=="3FGA":
+                            fga3q4 += 1
+                        elif play["ID_ACTION"]=="3FGM":
+                            fgm3q4 += 1
+                            fga3q4 += 1
+                        elif play["ID_ACTION"]=="2FGA" or play["ID_ACTION"]=="2FGM":
+                            fga2q4 += 1
             
             d[1] = [fgm3q1, fga3q1, fga2q1]
             d[2] = [fgm3q2, fga3q2, fga2q2]
