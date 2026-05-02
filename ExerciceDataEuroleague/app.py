@@ -220,6 +220,32 @@ def comeback_3pt_attempt_rate (season):
 
 st.set_page_config(page_title="🏀Analyse Euroleague", layout="wide")
 st.title("Analyse des données de l'Euroleague")
+code_css = """
+<style>
+ .stApp {
+   background-color: #0A192F;
+   }
+.stApp {
+   color: #FFFFFF;
+   }
+.stAPP {
+   # padding: 20px; 
+    } 
+.stApp label p {
+    color: #FFFFFF !important; 
+    }
+[data-testid="stSidebar"] {
+        color: #FFFFFF;
+    }
+    [data-testid="stSidebar"] {
+        background-color: #0A193F;
+    }
+    [data-testid="stSidebar"] label p {
+            color: #FFFFFF !important; 
+            font-size: 16px;
+        }"""
+
+st.markdown(code_css, unsafe_allow_html=True)
 
 with st.sidebar:
     st.header("Paramètres")
