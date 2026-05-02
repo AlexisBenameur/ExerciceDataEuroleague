@@ -257,7 +257,7 @@ st.markdown(code_css, unsafe_allow_html=True)
 with st.sidebar:
     st.header("Paramètres")
     season = st.selectbox("Saison", [2021, 2022, 2023, 2024])
-    diff_target = st.slider("Différence de points à la fin du QT", -20, 20, 0)
+    diff_target = st.slider("Différence de points à la fin du QT", -40, 40, 0)
 
 vue_choisie = st.sidebar.radio("Choisissez une analyse", ("Probabilité de victoire en fonction de la différence de points", "Statistiques des comebacks"))
 
