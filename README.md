@@ -2,7 +2,7 @@
 
 ## I - Première statistique
 
-J'ai d'abord dédidé de m'intéresser à ce qu'on appelle les comebacks. Le fait de gagner un match alors qu'on a été mené auparavant dans le match. Ici j'ai choisi de définir le comeback par une défaite de 10 points ou plus à la fin du troisième quart temps. Bien entendu un comeback peut prendre bien d'autres formes et peut durer bien plus qu'un quart temps avant la fin du match. Mais pour simplifier j'ai choisi ce critère afin de voir déjà si les résultats obtenus avaient un sens. Mais alors par où commencer.
+J'ai d'abord décidé de m'intéresser à ce qu'on appelle les comebacks. Le fait de gagner un match alors qu'on a été mené auparavant dans le match. Ici j'ai choisi de définir le comeback par une défaite de 10 points ou plus à la fin du troisième quart temps. Bien entendu un comeback peut prendre bien d'autres formes et peut durer bien plus qu'un quart temps avant la fin du match. Mais pour simplifier j'ai choisi ce critère afin de voir déjà si les résultats obtenus avaient un sens. Mais alors par où commencer.
 
 ### A. La proba de victoire selon la différence de score 
 
