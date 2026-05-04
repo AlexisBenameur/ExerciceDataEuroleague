@@ -196,9 +196,8 @@ def plot_defensive_heatmap(season, team):
 
     fig.add_layout_image(
         dict(
-            source="terrain_euroleague.png", # Assure-toi que ce nom correspond à ton fichier !
+            source="terrain_euroleague.png", 
             xref="x", yref="y",
-            # Calibrage pour cette image spécifique :
             x=-400,     # Centre l'image horizontalement
             y=850,      # Aligne le haut de l'image
             sizex=800,  # Largeur totale
