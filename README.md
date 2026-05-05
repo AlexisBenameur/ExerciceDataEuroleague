@@ -1,64 +1,31 @@
-# Analyse offensive et défensive des équipes d'Euroleague
+# Exercice Data Euroleague
 
-Projet réalisé par Alexis Benameur
+## I - Première statistique
 
-## Table des matières
+J'ai d'abord dédidé de m'intéresser à ce qu'on appelle les comebacks. Le fait de gagner un match alors qu'on a été mené auparavant dans le match. Ici j'ai choisi de définir le comeback par une défaite de 10 points ou plus à la fin du troisième quart temps. Bien entendu un comeback peut prendre bien d'autres formes et peut durer bien plus qu'un quart temps avant la fin du match. Mais pour simplifier j'ai choisi ce critère afin de voir déjà si les résultats obtenus avaient un sens. Mais alors par où commencer.
 
-1. Définitions
-2. Objectifs
-3. Source des données et bibliothèques python
-4. Présentation du dépôt
-5. Comment lancer les programmes
+### A. La proba de victoire selon la différence de score 
 
----
+La première idée que j'ai eu et qui m'a donné envie de m'intéresser à ce sujet était de voir la probabilité de gagner en ayant une avance ou un retard d'un certain nombre de points à la fin de chaque quart temps. Pour ça il fallait d'abord récupérer tous les gamecodes dans get_gamecodes pour pouvoir apppeler par match chaque node (grapic stats, shooting chart etc...). Ensuite j'ai choisi un dictionnaire pour stocker les différences de score à chaque quart temps dans la fonction get_score et je n'ai pas choisi de la prendre par rapport à l'équipe gagnante mais par rapport à l'équipe à domicile. J'ai aussi stocké un booléen déterminant si l'équipe à domicile a gagné pour calculer la probabilité recherchée plus facilement dans proba_win_given_diff. 
+Enfin plot_proba_win récupère les résultats de la fonction précédente pour chaque quart temps et la différence de score demandée. Le visuel est assez simple : une barre de probabilité par quart temps. L'idée pour donner plus de sens à cette statistique serait de regarder la probabilité minute par minute mais je ne voulais pas surcharger mon ordi qui aura, je pense, déjà du mal à parcourir les, plus de 300, matchs assez rapidement. Cependant cette stat seule n'apporte pas beaucoup plus d'informations que ça sur les stratégies gagnantes de certaines équipes.
 
-### 1. Définitions
+### B. Quelles peuvent être les facteurs décisifs pour un comeback ?
 
-**Le comeback :**
-Gagner un match alors qu'on perdait de 10 points ou plus à la fin du troisième quart temps.
+Au vu de l'évolution récente des styles de jeu et l'augmentation de l'importance du tir à 3 points, je me suis intéressé à ce type de tirs en particulier. Deux choses peuvent être déterminantes pour les équipes qui réalisent un comeback : leur pourcentage de réussite à 3 points qui peut être meilleur à l'approche de la fin d'un match, et bien entendu leur attempt rate à trois points, id est la part des tirs qui sont des tirs à 3 points. 
+J'ai donc d'abord récupéré avec get_comeback_games les gamecodes des matchs où il ya eu un comeback comme défini précédemment. Ensuite je me suis concentré sur les équipes qui ont gagné ces matchs et j'ai récupéré le nombres de tentatives à 2 et à 3 points ainsi que le nombre de tirs à 3 points rentrés avec la fonction get_shot_numbers en regardant quart temps par quart temps. J'ai fait du copier coller pour chaque quart-temps car une boucle aurait été tout aussi longue voire plus car on regarde ici le play by play. Enfin, une fois qu'on a ce dictionnaire on peut facilement comparer le FG% à 3 et le 3 point attempt rate selon les quart temps en s'attendant à voir une hausse de chacune de ces données dans le dernier quert temps. 
 
-**3 point field goal attempt rate :**
-Pourcentage des tirs à 3 points parmi l'ensemble des tirs pris par une équipe durant un match.
+### C. Résultats et interprétations
 
----
+Sans les identifiants je n'ai pas pu voir les résultats des graphiques mais l'interface créée avec Streamlit a l'air de bien fonctionner. Pour lancer le code il suffit d'ouvrir app.py puis de rajouter les identifiants au début du code dans credentials (au début du code) et de lancer streamlit run app.py et si jamais un message d'erreur s'affiche il faut mettre pip install streamlit requests pandas plotly dans le terminal avant si ces modules n'ont pas encore été installés. Puis le tout fonctionnera normalement. 
 
-### 2. Objectifs
+## II - Deuxième statistique
 
-Ce projet est divisé en 2 parties : une se concentrant sur les comebacks et donc sur les stratégies offensives, l'autre seulement sur la défense par zone de chaque équipe.
+Ensuite je voulais plutôt voir l'impact défensif qu'ont certaines équipes au lieu de leur impact offensif. Pour cela j'ai pensé à un outil que l'on utilise justement en général pour analyser l'attaque : la heatmap. Je l'ai transformé pour voir dans quelle zone une équipe défend le mieux. 
 
-Pour la première partie l'objectif était de regarder la probabilité de gagner un match selon la différence de points à chaque quart temps. Ensuite je me concentrais sur un aspect offensif, permettant de faire un comeback, qui était le tir à 3 points. Je voulais donc récupérer le poucentage à 3 points et le 3 point attempt rate pour chaque quart temps.
+### A. Idée et implémentation
 
-Pour la seconde partie je voulais m'intéresser aux endroits où une équipe défendait le mieux. Pour représenter cela j'ai pensé à une heatmap avec des couleurs selon la défense dans cette zone. Il fallait donc d'abord récupérer les pourcentages de chaque équipe dans chaque zone sur une saison. Puis pour une équipe, déterminer quel pourcentage de réussite avaient les autres équipes contre elle dans cette zone. 
+J'ai décidé d'utiliser les zones déjà prédéfinies dans l'API repérées par des lettres (de C à L) plutôt que les coordonnées parce que sinon le programme aurait sûrement été beaucoup plus lent. Ainsi j'ai compté pour chaque zone le nombre de paniers mis et le nombre de tir pris par match avec get_fg, avant de tout additionner avec get_fg_all_season puis de faire une moyenne avec get_fg_percentage. J'avais donc un pourcentage de réussite au tir pour chaque zone pour toutes les équipes. Il me restait donc à regarder une équipe en particulier et parcourir ses matchs en calculant à chaque fois le pourcentage de réussite de l'équipe adverse, et le comparer avec sa moyenne sur la saison pour voir si il y avait une réduction du pourcentage de réussite ou une augmentation avec get_reduced_fg_all_season. Le critère que j'ai choisi pour tracer est que si le pourcentage est le même en moyenne sur tous les matchs de l'équipe sélectionnée alors la défense est moyenne et donc en jaune orangé. Si la défense est bonne (réduction du pourcentage) alors la zone s'affiche en vert et en rouge au contraire si la défense est mauvaise. Enfin je devais récupérer simplement le nom des équipes pour pouvoir sélectionner celle à regarder sur le dashboard.
 
----
+### B. Résultats et interprétations
 
-### 3. Source des données et bibliothèques python
-
-Pour les données je n'ai utilisé qu'une source :
-
-* **L'API de l'Euroleague :** Résultats des matchs, statistiques play by play, statistiques des joueurs et des équipes etc...
-
-Pour les bibliothèques python, j'ai utilisé : 
-
-* **Plotly :** Faire des graphiques.
-* **Pandas :** Faire des data frames compatibles avec plotly.
-* **Requests :** Récupérer les données contenues dans l'API.
-* **Streamlit :** Faire les dashboards en créeant des serveurs locaux.
-
----
-
-### 4. Présentation du dépôt
-
-Le projet est structuré en deux dossier :
-
-1. **Dossier 1 : ExerciceDataEuroleague** Notebook analyse_euroleague.ipynb (avec toutes les fonctions et une explication) et fichier app.py (avec toutes les fonctions à la suite et les commandes streamlit pour visualiser les dasboards).
-2. **Dossier 2 : heatmap** Notebook heatmap_defensive.ipynb (avec toutes les fonctions et une explication), fichier app_heatmap.py (avec toutes les fonctions à la suite et les commandes streamlit pour visualiser les dasboards) et fichier terrain_euroleague.png (photo d'un demi terrain pour la heatmap)
-
-
----
-
-### 5. Comment lancer les programmes
-
-Pour lancer le premier code il faut ouvrir app.py puis rajouter les identifiants dans credentials (au début du code) et exécuter streamlit run app.py dans le terminal. Si jamais un message d'erreur s'affiche il faut mettre pip install streamlit requests pandas plotly dans le terminal avant si ces modules n'ont pas encore été installés. 
-
-Pour lancer le deuxième code il faut récupérer l'image nommée terrain_euroleague.png sur le git puis taper dans le terminal streamlit run app_heatmap.py. Si jamais un message d'erreur s'affiche il faut mettre pip install streamlit requests pandas plotly dans le terminal avant si ces modules n'ont pas encore été installés.
+De même que précedemment, sans les identifiants, je n'ai pas pu analyser les graphiques et voir si ceux ci s'affichaient bien, mais l'interface streamlit est fonctionnelle. Pour lancer le code il faut récupérer l'image nommée terrain_euroleague.png sur le git puis taper dans le terminal streamlit run app_heatmap.py et si jamais un message d'erreur s'affiche il faut mettre pip install streamlit requests pandas plotly dans le terminal avant si ces modules n'ont pas encore été installés. Puis le tout fonctionnera normalement.
